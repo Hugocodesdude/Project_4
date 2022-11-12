@@ -3,6 +3,8 @@ import random
 import numpy as np
 import markdown.extensions.fenced_code
 import tools.sql_queries as esecuele
+import nltk
+nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 

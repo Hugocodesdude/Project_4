@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import random
 import numpy as np
 import markdown.extensions.fenced_code
+from dotenv import load_dotenv
 import tools.sql_queries as esecuele
 import nltk
 nltk.download('vader_lexicon')
@@ -26,13 +27,15 @@ def sql ():
 def lines_from_characters (name):
     return jsonify(esecuele.get_everything_from_character(name))
 
+@app.route("/sentiment_all", )
+def sentiment ():
+    everything = esecuele.get_all_speech()
+    return jsonify([sia.polarity_scores(i["speech"])["compound"] for i in everything])
 
-@app.route("/sa/<name>/", )
-def sa_from_character (name):
-    everything = esecuele.get_just_dialogue(name)
-    #return jsonify(everything)
-    return jsonify([sia.polarity_scores(i["dialogue"])["compound"] for i in everything])
-
+@app.route("/sentiment/<location>", )
+def sentimentcity ():
+    everything = esecuele.city_sentiment()
+    return jsonify([sia.polarity_scores(i["speech"])["compound"] for i in everything]
 
 ####### POST
 @app.route("/insertrow", methods=["POST"])

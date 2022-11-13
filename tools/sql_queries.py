@@ -1,5 +1,6 @@
 from config.sql_connection import engine
 import pandas as pd
+import random
 
 
 def get_everything ():
@@ -45,3 +46,9 @@ def get_just_location (name):
         """
         engine.execute(query)
         return f"Correctly introduced!"
+
+def get_random_sentence():
+    query = (f"""SELECT speech FROM trump_rally_speeches""")
+    df=pd.read_sql_query(query,con=engine)
+    index = random.choice(range(0, 2000))
+    return df.iloc[[index]] 

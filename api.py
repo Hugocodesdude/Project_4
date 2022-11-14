@@ -32,26 +32,51 @@ def sentiment ():
     everything = esecuele.get_all_speech()
     return jsonify([sia.polarity_scores(i["speech"])["compound"] for i in everything])
 
+
 @app.route("/sentiment/<location>" )
-def sentimentcity ():
-    everything = esecuele.city_sentiment()
+def sentimentcity (location):
+    everything = esecuele.city_sentiment(location)
     return jsonify([sia.polarity_scores(i["speech"])["compound"] for i in everything])
 
-@app.route("/sentiment/random")
+#Random Speech
+@app.route("/random")
+def get_sentiment_one_random():
+    #df = esecuele.get_random_sentence()
+    nltk.downloader.download('vader_lexicon')
+    sia = SentimentIntensityAnalyzer()
+
+    #def sa(x):
+        #try:
+            #return sia.polarity_scores(x)
+        #except:
+            #return x
+
+    #df["sentiment_all"] = df["speech"].apply(sa)
+
+    return jsonify(esecuele.get_random_sentence())
+    
+    #(df.to_dict(orient='records'))
+
+#Random Speech with Sentiment 
+@app.route("/random/sentiment")
 def get_sentiment_one_random():
     df = esecuele.get_random_sentence()
     nltk.downloader.download('vader_lexicon')
     sia = SentimentIntensityAnalyzer()
+    df["sentiment_all"] = df["speech"].apply(sa)
 
     def sa(x):
         try:
             return sia.polarity_scores(x)
+            df["sentiment_all"] = df["speech"].apply(sa)
         except:
             return x
 
-    df["sentiment_all"] = df["speech"].apply(sa)
+    
 
-    return jsonify(df.to_dict(orient='records'))
+    return jsonify(esecuele.get_random_sentence())
+    
+    #(df.to_dict(orient='records'))
 
 ####### POST
 @app.route("/insertrow", methods=["POST"])

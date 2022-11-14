@@ -16,6 +16,7 @@ def get_everything_from_speech (name):
     df = pd.read_sql_query(query, engine)
     return df.to_dict(orient="records")
 
+#Return all speeches 
 def get_all_speech():
     query = f"""SELECT speech 
     FROM trump_rally_speeches;"""
@@ -23,14 +24,16 @@ def get_all_speech():
     df = pd.read_sql_query(query, engine)
     return df.to_dict(orient="records")
 
+#City Sentiment on Location 
 def city_sentiment(location):
     query = f"""SELECT speech 
     FROM trump_rally_speeches
-    WHERE location = {location};"""
+    WHERE location = '{location}';"""
 
     df = pd.read_sql_query(query, engine)
     return df.to_dict(orient="records")
 
+#Return Random Location 
 def get_just_location (name):
     query = f"""SELECT dialogue 
     FROM trump_rally_speeches
@@ -47,8 +50,10 @@ def get_just_location (name):
         engine.execute(query)
         return f"Correctly introduced!"
 
+#
 def get_random_sentence():
-    query = (f"""SELECT speech FROM trump_rally_speeches""")
+    query = (f"""SELECT speech FROM trump_rally_speeches
+    ORDER BY RAND()
+    LIMIT 1;""")
     df=pd.read_sql_query(query,con=engine)
-    index = random.choice(range(0, 2000))
-    return df.iloc[[index]] 
+    return df.to_dict(orient="records")

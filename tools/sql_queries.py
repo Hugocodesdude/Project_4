@@ -2,12 +2,13 @@ from config.sql_connection import engine
 import pandas as pd
 import random
 
-
+# Function to return all content
 def get_everything ():
     query = """SELECT * FROM trump_rally_speeches;"""
     df = pd.read_sql_query(query, engine)
     return df.to_dict(orient="records")
 
+# Function to return 
 def get_everything_from_speech (name):
     query = f"""SELECT * 
     FROM trump_rally_speeches
@@ -42,7 +43,8 @@ def get_just_location (name):
     df = pd.read_sql_query(query, engine)
     return df.to_dict(orient="records")
 
-    def insert_one_row (location, dates, years, speech):
+#POST
+def insert_one_row (location, dates, years, speech):
         query = f"""INSERT INTO trump_rally_speeches
         (location, dates, years, speech) 
             VALUES ({location}, '{dates}', '{years}','{speech}');

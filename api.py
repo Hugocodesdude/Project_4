@@ -23,58 +23,54 @@ def readme ():
 def sql ():
     return jsonify(esecuele.get_everything())
 
-@app.route("/sql/<name>", )
-def lines_from_characters (name):
-    return jsonify(esecuele.get_everything_from_character(name))
-
+# Returns the sentiment score of all cities
 @app.route("/sentiment_all" )
 def sentiment ():
     everything = esecuele.get_all_speech()
     return jsonify([sia.polarity_scores(i["speech"])["compound"] for i in everything])
 
-
+# Returns sentiment of given location
 @app.route("/sentiment/<location>" )
 def sentimentcity (location):
     everything = esecuele.city_sentiment(location)
     return jsonify([sia.polarity_scores(i["speech"])["compound"] for i in everything])
 
-#Random Speech
+# Returns random Speech
 @app.route("/random")
-def get_sentiment_one_random():
-    #df = esecuele.get_random_sentence()
-    nltk.downloader.download('vader_lexicon')
-    sia = SentimentIntensityAnalyzer()
-
-    #def sa(x):
-        #try:
-            #return sia.polarity_scores(x)
-        #except:
-            #return x
-
-    #df["sentiment_all"] = df["speech"].apply(sa)
-
+def get_sentiment_one_random_original():
     return jsonify(esecuele.get_random_sentence())
-    
-    #(df.to_dict(orient='records'))
 
+
+# Returns random phrase with sentiment 
+@app.route("/random-sentiment")
+def get_sentiment_one_random():
+    '''sentiment del discurso aleatorio
+    y frase aleatoria dentro del discurso (para saber de d'onde viene)'''
+    random_sentence = esecuele.get_random_sentence()
+    sent = sia.polarity_scores(random_sentence[0]['speech'])
+
+    dict_ = {
+        'pos': sent['pos'],
+        'Speech': np.random.choice(random_sentence[0]['speech'].split('.'))
+    }
+
+    return jsonify(dict_)
+    
 #Random Speech with Sentiment 
 @app.route("/random/sentiment")
-def get_sentiment_one_random():
+def get_sentiment_one_random_speech():
     df = esecuele.get_random_sentence()
     nltk.downloader.download('vader_lexicon')
     sia = SentimentIntensityAnalyzer()
     df["sentiment_all"] = df["speech"].apply(sa)
+    print(df)
 
-    def sa(x):
-        try:
-            return sia.polarity_scores(x)
-            df["sentiment_all"] = df["speech"].apply(sa)
-        except:
-            return x
-
-    
-
-    return jsonify(esecuele.get_random_sentence())
+    try:
+        df["sentiment_all"] = df["speech"].apply(sia.polarity_scores())
+    except:
+        pass
+    print(df)
+    return jsonify(df)
     
     #(df.to_dict(orient='records'))
 
@@ -83,12 +79,13 @@ def get_sentiment_one_random():
 def try_post ():
     # Decoding params
     my_params = request.args
-    scene = my_params["scene"]
-    character_name = my_params["character_name"]
-    dialogue = my_params["dialogue"]
+    location = my_params["location"]
+    dates = my_params["dates"]
+    years = my_params["years"]
+    speech = my_params["speech"]
 
     # Passing to my function: do the inserr
-    esecuele.insert_one_row(scene, character_name, dialogue)
+    esecuele.insert_one_row(location, dates, years, speech)
     return f"Query succesfully inserted"
 
 

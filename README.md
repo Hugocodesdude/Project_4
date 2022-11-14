@@ -43,7 +43,6 @@ For this particular project we had to demonstrate our ability to be the data pro
 I imported the following tools to run the code: 
 
 ```python
-
 import os
 
 import json
@@ -97,8 +96,8 @@ random_phrase_sentiment.json()
 - Posts
 ```python
 
-headers = {'location':'New York', 'dates':'mar21', 'years':'2022', 'speech':'Hello world.'}
-requests.post('http://localhost:9000/insertrow', params=headers)
+params = {'location':'New York', 'dates':'mar21', 'years':'2022', 'speech':'Hello world.'}
+requests.post('http://localhost:9000/insertrow', params=params)
 <Response [200]>
 ```
 --------

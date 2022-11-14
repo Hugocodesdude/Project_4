@@ -47,7 +47,7 @@ def get_just_location (name):
 def insert_one_row (location, dates, years, speech):
         query = f"""INSERT INTO trump_rally_speeches
         (location, dates, years, speech) 
-            VALUES ({location}, '{dates}', '{years}','{speech}');
+            VALUES ('{location}', '{dates}', '{years}','{speech}');
         """
         engine.execute(query)
         return f"Correctly introduced!"

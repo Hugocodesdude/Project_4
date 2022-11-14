@@ -4,6 +4,7 @@
 
 ![](images/trump_rally_image.png)
 
+<img src = “https://github.com/Hugocodesdude/Project_4/blob/main/images/trump_rally_image.png?raw=true” alt=“flower”>
 
 
 ### Task: Build an API that queries data from mySQL database and output in a localhost browser window. Lastly, apply NLP for the selected text to gain a sentiment score. 
